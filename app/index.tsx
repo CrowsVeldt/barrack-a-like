@@ -24,14 +24,16 @@ export default function Index() {
     percentToWin: 80,
     currentPercent: 0,
   });
-  const [currentBalls, setCurrentBalls] = useState<BallType[]>(
-    gameState.value.balls
-  );
+  const [currentBalls, setCurrentBalls] = useState<BallType[]>([
+    { position: { x: height / 2, y: width / 2 }, velocity: 5, direction: 45 },
+    { position: { x: height / 2, y: width / 2 }, velocity: 5, direction: 90 },
+    { position: { x: height / 2, y: width / 2 }, velocity: 5, direction: 0 },
+  ]);
   const [playing, setPlaying] = useState<boolean>(false);
 
   useEffect(() => {
-    const newBalls = currentBalls.map((ball) => moveBall(ball));
-    setCurrentBalls(newBalls)
+    const newBalls = currentBalls.map((ball) => moveBall(ball, width, height));
+    setCurrentBalls(newBalls);
   }, [playing]);
 
   return (
