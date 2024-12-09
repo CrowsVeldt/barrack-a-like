@@ -1,4 +1,16 @@
-import { Ball } from "./types";
+import { Ball, GameState } from "./types";
+
+export const update: (gameState: GameState) => GameState = (gameState) => {
+  const newGameState: GameState = {
+    balls: gameState.balls.map((ball, index) => {
+      return moveBall(ball);
+    }),
+    lives: gameState.lives,
+    percentToWin: gameState.percentToWin,
+    currentPercent: gameState.currentPercent,
+  };
+  return newGameState;
+};
 
 export const moveBall = (ball: Ball) => {
   // Calculation for ball movement from: https://math.stackexchange.com/questions/143932/calculate-point-given-x-y-angle-and-distance
