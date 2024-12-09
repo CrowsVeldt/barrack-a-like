@@ -1,6 +1,8 @@
-type Ball = {
-  x: number;
-  y: number;
+export type Ball = {
+  position: {
+    x: number;
+    y: number;
+  };
   velocity: number;
   direction: number;
 };
