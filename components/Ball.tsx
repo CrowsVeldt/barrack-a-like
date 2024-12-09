@@ -1,4 +1,5 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
+import Animated from "react-native-reanimated";
 
 export default function ({ x, y }: { x: number; y: number }) {
   const styleProps = {
@@ -6,7 +7,7 @@ export default function ({ x, y }: { x: number; y: number }) {
     left: y,
   };
 
-  return <View style={[styles.ball, styleProps]} />;
+  return <Animated.View style={[styles.ball, styleProps]} />;
 }
 const styles = StyleSheet.create({
   ball: {
