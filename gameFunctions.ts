@@ -19,16 +19,18 @@ export const moveBall: (ball: BallType) => BallType = (ball) => {
   // xx = x + (d * cos(alpha))
   // yy = y + (d * sin(alpha))
 
+  const newX: number = Math.round(
+    ball.position.x + ball.velocity * Math.cos(ball.direction * (Math.PI / 180))
+  );
+
+  const newY: number = Math.round(
+    ball.position.y + ball.velocity * Math.sin(ball.direction * (Math.PI / 180))
+  );
+
   const newBall: BallType = {
     position: {
-      x: Math.round(
-        ball.position.x +
-          ball.velocity * Math.cos(ball.direction * (Math.PI / 180))
-      ),
-      y: Math.round(
-        ball.position.y +
-          ball.velocity * Math.sin(ball.direction * (Math.PI / 180))
-      ),
+      x: newX,
+      y: newY,
     },
     velocity: ball.velocity,
     direction: ball.direction,

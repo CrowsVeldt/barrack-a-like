@@ -1,51 +1,38 @@
 import { useEffect, useState } from "react";
-import { useWindowDimensions, View } from "react-native";
-import { GameState } from "@/types";
-import { moveBall } from "@/utils";
+import { Button, useWindowDimensions, View } from "react-native";
+import { GameStateType, BallType } from "@/types";
+import { moveBall, update } from "@/gameFunctions";
 import Ball from "@/components/Ball";
+import {
+  SharedValue,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
 export default function Index() {
-  // x = width
-  // y = height
-  const { height, width }: { height: number; width: number } =
+  // x = width, y = height
+  const { width, height }: { height: number; width: number } =
     useWindowDimensions();
-  const [playing, setPlaying] = useState<boolean>(false);
-  const [gameState, setGameState] = useState<GameState>({
+  const gameState: SharedValue<GameStateType> = useSharedValue({
     balls: [
-      { position: { x: 0, y: 0 }, velocity: 5, direction: 45 },
-      { position: { x: 10, y: 10 }, velocity: 5, direction: 90 },
-      { position: { x: 20, y: 20 }, velocity: 5, direction: 180 },
+      { position: { x: height / 2, y: width / 2 }, velocity: 5, direction: 45 },
+      { position: { x: height / 2, y: width / 2 }, velocity: 5, direction: 90 },
+      { position: { x: height / 2, y: width / 2 }, velocity: 5, direction: 0 },
     ],
     lives: 3,
     percentToWin: 80,
     currentPercent: 0,
   });
-
-  const tick = () => {
-    const timeout = setTimeout(() => {
-      if (playing) {
-        const newGameState: GameState = {
-          balls: gameState.balls.map((ball, index) => {
-            return moveBall(ball);
-          }),
-          lives: gameState.lives,
-          percentToWin: gameState.percentToWin,
-          currentPercent: gameState.currentPercent,
-        };
-
-        console.log(newGameState.balls);
-        setGameState(newGameState);
-        tick();
-      } else {
-        // end game
-        clearTimeout(timeout);
-      }
-    }, 1000);
-  };
+  const [currentBalls, setCurrentBalls] = useState<BallType[]>(
+    gameState.value.balls
+  );
+  const [playing, setPlaying] = useState<boolean>(false);
 
   useEffect(() => {
-    tick()
-  }, [])
+    const newBalls = currentBalls.map((ball) => moveBall(ball));
+    setCurrentBalls(newBalls)
+  }, [playing]);
 
   return (
     <View
@@ -53,10 +40,11 @@ export default function Index() {
         flex: 1,
       }}
     >
-      {gameState &&
-        gameState.balls.map((ball, index) => {
+      {currentBalls &&
+        currentBalls.map((ball, index) => {
           return <Ball x={ball.position.x} y={ball.position.y} key={index} />;
         })}
+      <Button title="play" onPress={() => setPlaying(!playing)} />
     </View>
   );
 }
