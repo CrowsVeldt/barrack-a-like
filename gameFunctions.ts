@@ -14,7 +14,7 @@ export const update: (gameState: GameStateType) => GameStateType = (
   return newGameState;
 };
 
-export const moveBall = (ball: BallType) => {
+export const moveBall: (ball: BallType) => BallType = (ball) => {
   // Calculation for ball movement from: https://math.stackexchange.com/questions/143932/calculate-point-given-x-y-angle-and-distance
   // xx = x + (d * cos(alpha))
   // yy = y + (d * sin(alpha))
