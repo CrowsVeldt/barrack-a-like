@@ -1,4 +1,4 @@
-export type Ball = {
+export type BallType = {
   position: {
     x: number;
     y: number;
@@ -7,8 +7,8 @@ export type Ball = {
   direction: number;
 };
 
-export type GameState = {
-  balls: Ball[];
+export type GameStateType = {
+  balls: BallType[];
   lives: number;
   percentToWin: number;
   currentPercent: number;
